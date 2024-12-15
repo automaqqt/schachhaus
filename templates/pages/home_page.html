@@ -71,9 +71,12 @@
                 {% include "components/button.html" with title=page.hero_cta.0.value.get_title url=page.hero_cta.0.value.get_url %}
             </div>
         {% endif %}
-        <div class="pt-10 pb-10">
+        {% if page.header_video %}
+        <div class="pt-10 pb-10" >
             {% video self.header_video autoplay controls muted %}
         </div>
+        {% endif %}
+       
         
     </div>
 </div>
