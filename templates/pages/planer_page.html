@@ -1,0 +1,22 @@
+
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block content %}
+    <div class="site-padding site-container">
+        <div class="relative  pb-20" style="width: 100%;">
+            <h1 class="font-serif4 [word-spacing:-6px] font-bold text-7xl lg:text-10xl">
+                {{ page.title }}
+            </h1>
+            <p class="pt-7 rich-text" style="height: 600px;">
+                <iframe src="https://calendar.google.com/calendar/embed?wkst=1&ctz=Europe%2FBerlin&src=OGJmMDI3ZDYyZDZjYjEwODg5MzNmZTRmNTg1MGQyMDA4MzU4NjU0MTc5MWU5NjVmMGJiOGExM2UyNzBkYjYzOUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23009688" style="border:solid 1px #a77051; border-radius: 15px;" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+            </p>
+        </div>
+    </div>
+
+    {% include_block page.body %}
+
+    {% include "components/related-pages.html" %}
+
+{% endblock %}
+

@@ -1,0 +1,401 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags static util_tags %}
+
+{% block content %}
+<div class="site-container">
+    <div class="chessboard-container">
+        <div class="chessboard">
+            {% for row in "87654321" %}
+                {% for col in "ABCDEFGH" %}
+                    {% with col|add:row as position %}
+                    {% with forloop.counter0 as col_index %}
+                            {% with forloop.parentloop.counter0 as row_index %}
+                        <div class="chess-square-container">
+                            <div 
+                            class="
+                            chess-square 
+                            {% if col_index|add:row_index|modulo:2 == 1 %}dark-square{% else %}light-square{% endif %}
+                            {% if occupied_positions|get_item:position %}occupied{% else %}empty{% endif %}
+                        "
+                                data-position="{{ position }}" 
+                                data-state="default"
+                                onclick="toggleCard(this)"
+                            >
+                            <div class="square-content">
+                                {% if occupied_positions|get_item:position %}
+                                    {% with occupied_positions|get_item:position as sponsor %}
+                                    {{sponsor.name}}
+                                    {% endwith %}
+                                {% else %}
+                                    {{ position }}
+                                {% endif %}
+                            </div>
+                                {% if occupied_positions|get_item:position %}
+                                    <div class="sponsor-card">
+                                        {% with occupied_positions|get_item:position as sponsor %}
+                                            <div class="sponsor-card-header">
+                                                <h3 class="sponsor-name">{{ sponsor.name }}</h3>
+                                                {% if sponsor.picture %}
+                                                    <img src="{{ sponsor.picture.url }}" alt="{{ sponsor.name }}" class="sponsor-picture">
+                                                {% endif %}
+                                            </div>
+                                            <p class="sponsoring-since">Sponsor seit: {{ sponsor.sponsoring_since|date:"F Y" }}</p>
+                                            {% if sponsor.website %}
+                                                <a href="{{ sponsor.website }}" target="_blank" class="sponsor-website">Website</a>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                {% else %}
+                                    <!-- Default Card -->
+                                    <div class="default-card">
+                                        <h3 class="default-title">Dieses Feld ist noch verfügbar!</h3>
+                                        <p class="default-description">Schreib uns doch wenn du uns unterstützen möchtest und dieses Feld kaufen willst.</p>
+                                        <a href="/contact" class="contact-button">Kontakt</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Optional CSS -->
+<style>
+.chessboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+    width: min(80vw, 960px);
+    aspect-ratio: 1; /* Keeps the chessboard square */
+    border-width: 10px;
+    border-color: #a77051;
+    border-radius: 12px;
+    background-color: #a77051;
+    position: relative; /* Ensure the card positions correctly */
+}
+
+.chess-square {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+
+/* Light Squares */
+.chess-square.light-square.empty {
+    background-color: #ebdac6; /* Light beige */
+}
+
+/* Dark Squares */
+.chess-square.dark-square.empty {
+    background-color: #afaaaa; /* Light grey */
+}
+
+
+.chess-square.dark-square.occupied {
+    background-color: #c3a58e;
+}
+
+.chess-square.light-square.occupied {
+    background-color: #c3a58e;
+}
+
+
+/* Zoom and vibrate animation on hover */
+.chess-square[data-state="default"]:hover {
+    
+    outline: 4px solid #A77051;
+    outline-offset: -4px;
+    animation: vibrate 0.5s linear infinite;
+    z-index: 0;
+}
+
+/* Vibrate animation */
+@keyframes vibrate {
+    0% { transform: translate(0px, 0px) ; }
+    25% { transform: translate(1px, -1px); }
+    50% { transform: translate(-1px, 1px); }
+    75% { transform: translate(1px, 1px); }
+    100% { transform: translate(0px, 0px); }
+}
+
+
+/* Square content inside */
+.square-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 80%;
+    height: 80%;
+}
+
+/* Make sponsor picture round */
+.square-sponsor-picture {
+    width: 80%; /* Fit the image within the square */
+    height: 80%;
+    object-fit: cover;
+    border-radius: 50%; /* Make the image circular */
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect on sponsor picture */
+.square-content:hover .square-sponsor-picture {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+
+.sponsor-card {
+    position: absolute;
+    top: 10%;
+    width: 320px;
+    height: 320px;
+    transform: translate(-50%, -50%) scale(0);
+    background-color: #E1C4A8;
+    border-radius: 12px;
+    border-width: 6px;
+    border-color: #A77051;
+    border-style: dashed;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px;
+    margin: 0 auto;
+}
+
+.chess-square[data-state="expanded"] .sponsor-card {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sponsor-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.sponsor-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.sponsor-picture {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.sponsoring-since {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.sponsor-website {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #A77051; /* Use the brown from the current theme */
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sponsor-website:hover {
+    background-color: #865b3f; /* Darker brown on hover */
+}
+
+/* Default Card */
+.default-card {
+    position: absolute;
+    top: 10%;
+    width: 320px;
+    height: 320px;
+    transform: translate(-50%, -50%) scale(0);
+    background-color: #E1C4A8;
+    border-radius: 12px;
+    border-width: 6px;
+    border-color: #A77051;
+    border-style: dashed;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px;
+    margin: 0 auto;
+}
+
+/* Default Card Visible State */
+.chess-square[data-state="expanded"] .default-card {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Default Card Elements */
+.default-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.default-description {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #555;
+}
+
+.contact-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #a77051;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.contact-button:hover {
+    background-color: #8b5e44;
+}
+
+/* Card Overlay */
+.card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Card Modal (matches original card design) */
+.card-modal {
+    padding: 30px;
+    background-color: #E1C4A8;
+    border-radius: 12px;
+    border-width: 6px;
+    border-color: #A77051;
+    border-style: dashed; /* Rounded corners for smoothness */
+    max-width: 80%;
+    width: 600px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Match the card's internal design */
+.card-modal .sponsor-picture {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin-right: 10%;
+}
+.card-modal h3 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+.card-modal p {
+    margin: 10px 0;
+}
+.card-modal .sponsor-name {
+    margin-left: 10%;
+}
+.card-modal .sponsor-website,
+.card-modal .contact-us-btn {
+    background-color: #d4a373;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+.card-modal .sponsor-website:hover,
+.card-modal .contact-us-btn:hover {
+    background-color: #b38256;
+}
+
+/* Close Button */
+.card-modal .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+
+</style>
+<script src="{% static 'js/chessboard.js' %}"></script>
+{% endblock %}

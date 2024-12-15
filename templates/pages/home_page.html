@@ -1,0 +1,90 @@
+
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags wagtailvideos_tags static %}
+
+{% block content %}
+<div class="site-padding site-container">
+    <div class="relative max-w-[872px] pt-32 tall:pt-40 pb-40 md:pb-60">
+        <h1 class="font-serif4 [word-spacing:-6px] font-bold text-7xl lg:text-10xl">
+            {{ page.title }}
+        </h1>
+        
+        <div class="
+            absolute
+            overflow-hidden
+            z-[-1]
+            right-[-78px]
+            top-[98px]
+            w-52
+            h-52
+            md:right-[-131px]
+            md:top-[24px]
+            tall:md:top-[131px]
+            md:w-64
+            md:h-64
+            rotate-[32deg]
+        ">
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 64 64" 
+                class="w-full h-full">
+                <!-- Background -->
+                <rect width="64" height="64" rx="12" fill="#F4ECE2" fill-opacity="0.3" />
+                
+                <!-- Chessboard pattern -->
+                <g fill="#A77051" fill-opacity="0.3">
+                    <!-- Rows of alternating squares -->
+                    <rect x="8" y="8" width="8" height="8" />
+                    <rect x="24" y="8" width="8" height="8" />
+                    <rect x="40" y="8" width="8" height="8" />
+                    
+                    <rect x="16" y="16" width="8" height="8" />
+                    <rect x="32" y="16" width="8" height="8" />
+                    <rect x="48" y="16" width="8" height="8" />
+
+                    <rect x="8" y="24" width="8" height="8" />
+                    <rect x="24" y="24" width="8" height="8" />
+                    <rect x="40" y="24" width="8" height="8" />
+
+                    <rect x="16" y="32" width="8" height="8" />
+                    <rect x="32" y="32" width="8" height="8" />
+                    <rect x="48" y="32" width="8" height="8" />
+
+                    <rect x="8" y="40" width="8" height="8" />
+                    <rect x="24" y="40" width="8" height="8" />
+                    <rect x="40" y="40" width="8" height="8" />
+
+                    <rect x="16" y="48" width="8" height="8" />
+                    <rect x="32" y="48" width="8" height="8" />
+                    <rect x="48" y="48" width="8" height="8" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- Make the introduction div half of the container's width -->
+        <div class="pt-5 rich-text" style="width: 70%;">
+            {{ page.introduction|richtext }}
+        </div>
+
+        {% if page.hero_cta %}
+            <div class="pt-10">
+                {% include "components/button.html" with title=page.hero_cta.0.value.get_title url=page.hero_cta.0.value.get_url %}
+            </div>
+        {% endif %}
+        <div class="pt-10 pb-10">
+            {% video self.header_video autoplay controls muted %}
+        </div>
+        
+    </div>
+</div>
+
+    </div>
+
+    
+
+    {% include_block page.body %}
+
+    {% include "components/related-pages.html" %}
+
+{% endblock %}
+
