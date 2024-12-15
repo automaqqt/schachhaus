@@ -21,6 +21,7 @@ class HomePage(BasePage):
     header_video = models.ForeignKey('wagtailvideos.Video',
                                      related_name='+',
                                      null=True,
+                                     blank=True,
                                      on_delete=models.SET_NULL)
     body = StreamField(StoryBlock())
     featured_section_title = models.TextField(blank=True)
