@@ -9,7 +9,9 @@
             {{ page.title }}
         </h1>
         
-        <div class="
+        <!-- Animated Chessboard -->
+        <div class="animated-chessboard
+        
             absolute
             overflow-hidden
             z-[-1]
@@ -28,40 +30,36 @@
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox="0 0 64 64" 
                 class="w-full h-full">
-                <!-- Background -->
                 <rect width="64" height="64" rx="12" fill="#F4ECE2" fill-opacity="0.3" />
-                
-                <!-- Chessboard pattern -->
                 <g fill="#A77051" fill-opacity="0.3">
-                    <!-- Rows of alternating squares -->
-                    <rect x="8" y="8" width="8" height="8" />
-                    <rect x="24" y="8" width="8" height="8" />
-                    <rect x="40" y="8" width="8" height="8" />
-                    
-                    <rect x="16" y="16" width="8" height="8" />
-                    <rect x="32" y="16" width="8" height="8" />
-                    <rect x="48" y="16" width="8" height="8" />
-
-                    <rect x="8" y="24" width="8" height="8" />
-                    <rect x="24" y="24" width="8" height="8" />
-                    <rect x="40" y="24" width="8" height="8" />
-
-                    <rect x="16" y="32" width="8" height="8" />
-                    <rect x="32" y="32" width="8" height="8" />
-                    <rect x="48" y="32" width="8" height="8" />
-
-                    <rect x="8" y="40" width="8" height="8" />
-                    <rect x="24" y="40" width="8" height="8" />
-                    <rect x="40" y="40" width="8" height="8" />
-
-                    <rect x="16" y="48" width="8" height="8" />
-                    <rect x="32" y="48" width="8" height="8" />
-                    <rect x="48" y="48" width="8" height="8" />
+                     <!-- Rows of alternating squares -->
+                     <rect x="8" y="8" width="8" height="8" />
+                     <rect x="24" y="8" width="8" height="8" />
+                     <rect x="40" y="8" width="8" height="8" />
+                     
+                     <rect x="16" y="16" width="8" height="8" />
+                     <rect x="32" y="16" width="8" height="8" />
+                     <rect x="48" y="16" width="8" height="8" />
+ 
+                     <rect x="8" y="24" width="8" height="8" />
+                     <rect x="24" y="24" width="8" height="8" />
+                     <rect x="40" y="24" width="8" height="8" />
+ 
+                     <rect x="16" y="32" width="8" height="8" />
+                     <rect x="32" y="32" width="8" height="8" />
+                     <rect x="48" y="32" width="8" height="8" />
+ 
+                     <rect x="8" y="40" width="8" height="8" />
+                     <rect x="24" y="40" width="8" height="8" />
+                     <rect x="40" y="40" width="8" height="8" />
+ 
+                     <rect x="16" y="48" width="8" height="8" />
+                     <rect x="32" y="48" width="8" height="8" />
+                     <rect x="48" y="48" width="8" height="8" />
                 </g>
             </svg>
         </div>
 
-        <!-- Make the introduction div half of the container's width -->
         <div class="pt-5 rich-text" style="width: 70%;">
             {{ page.introduction|richtext }}
         </div>
@@ -71,23 +69,155 @@
                 {% include "components/button.html" with title=page.hero_cta.0.value.get_title url=page.hero_cta.0.value.get_url %}
             </div>
         {% endif %}
+
         {% if page.header_video %}
-        <div class="pt-10 pb-10" >
-            {% video self.header_video autoplay controls muted %}
-        </div>
+            <div class="pt-10 pb-10">
+                {% video self.header_video autoplay controls muted %}
+            </div>
         {% endif %}
-       
-        
     </div>
 </div>
+<!-- Optional CSS -->
+<style>
+/* Chessboard Animation */
+.animated-chessboard {
+    z-index: -1;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
 
-    </div>
+.animated-chessboard.scrolled {
+    transform: translateX(100vw); /* Move out of the screen */
+    opacity: 0;
+}
 
-    
+/* Stats Animation */
+/* Stats Animation */
+.stat-item {
+    opacity: 0;
+    transform: translateX(100px); /* Default off-screen position */
+    animation: none;
+}
 
-    {% include_block page.body %}
+.stat-item.fly-left {
+    transform: translateX(-400px); /* Off-screen left */
+}
 
-    {% include "components/related-pages.html" %}
+.stat-item.fly-right {
+    transform: translateX(400px); /* Off-screen right */
+}
 
+.stat-item.active {
+    opacity: 1;
+    animation: fly-in-bounce 1.4s ease-out forwards;
+}
+.cta-item {
+    opacity: 0;
+    transform: translateX(100px); /* Default off-screen position */
+    animation: none;
+}
+
+.cta-item.fly-left {
+    transform: translateX(-400px); /* Off-screen left */
+}
+
+.cta-item.fly-right {
+    transform: translateX(400px); /* Off-screen right */
+}
+
+.cta-item.active {
+    opacity: 1;
+    animation: fly-in-bounce-rev 1.4s ease-out forwards;
+}
+
+/* Keyframes for Fly-in with Bounce Effect */
+@keyframes fly-in-bounce {
+    0% {
+        transform: translateX(var(--fly-direction, 400px)); /* Start off-screen */
+        opacity: 0;
+    }
+    60% {
+        transform: translateX(0); /* Fly to the center */
+        opacity: 1;
+    }
+    80% {
+        transform: translateX(-10px); /* Slight overshoot */
+    }
+    100% {
+        transform: translateX(0); /* Settle in place */
+    }
+}
+/* Keyframes for Fly-in with Bounce Effect */
+@keyframes fly-in-bounce-rev {
+    0% {
+        transform: translateX(-400px); /* Start off-screen */
+        opacity: 0;
+    }
+    60% {
+        transform: translateX(0); /* Fly to the center */
+        opacity: 1;
+    }
+    80% {
+        transform: translateX(-10px); /* Slight overshoot */
+    }
+    100% {
+        transform: translateX(0); /* Settle in place */
+    }
+}
+
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    // Handle Chessboard Animation
+    const chessboard = document.querySelector(".animated-chessboard");
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 0) {
+            chessboard.classList.add("scrolled");
+        } else {
+            chessboard.classList.remove("scrolled");
+        }
+    });
+
+    // Handle Stats Animation
+    const statsSection = document.querySelector(".stats-container");
+    const statItems = document.querySelectorAll(".stat-item");
+
+    const observerOptions = {
+        root: null,
+        threshold: 0.8,
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                statItems.forEach((stat, index) => {
+                    setTimeout(() => {
+                        stat.classList.add("active");
+                    }, index * 200); // Stagger animations
+                });
+            }
+        });
+    }, observerOptions);
+
+    sectionObserver.observe(statsSection);
+
+    // CTA Section Animation
+    const ctaSection = document.querySelector(".cta-item"); // Adjust selector as per your markup
+
+    const ctaObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                ctaSection.classList.add("active");
+            }
+        });
+    }, observerOptions);
+
+    ctaObserver.observe(ctaSection);
+});
+
+</script>
+{% include_block page.body %}
+{% include "components/related-pages.html" %}
 {% endblock %}
+
 

@@ -17,16 +17,17 @@
                             {% if col_index|add:row_index|modulo:2 == 1 %}dark-square{% else %}light-square{% endif %}
                             {% if occupied_positions|get_item:position %}occupied{% else %}empty{% endif %}
                         "
+                                {% if occupied_positions|get_item:position %}
+                                {% with occupied_positions|get_item:position as sponsor %}
+                                style="background-image: url('{{ sponsor.picture.url }}'); background-size: cover; background-position: center;"
+                                {% endwith %}
+                                {% endif %}
                                 data-position="{{ position }}" 
                                 data-state="default"
                                 onclick="toggleCard(this)"
                             >
                             <div class="square-content">
-                                {% if occupied_positions|get_item:position %}
-                                    {% with occupied_positions|get_item:position as sponsor %}
-                                    {{sponsor.name}}
-                                    {% endwith %}
-                                {% else %}
+                                {% if not occupied_positions|get_item:position %}
                                     {{ position }}
                                 {% endif %}
                             </div>
@@ -156,7 +157,7 @@
     width: 80%; /* Fit the image within the square */
     height: 80%;
     object-fit: cover;
-    border-radius: 50%; /* Make the image circular */
+    
     transition: transform 0.3s ease;
 }
 
