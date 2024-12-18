@@ -8,12 +8,10 @@
         <h1 class="font-serif4 [word-spacing:-6px] font-bold text-7xl lg:text-10xl">
             {{ page.title }}
         </h1>
-        
-        <!-- Animated Chessboard -->
+        <div class="animated-chessboard-wrapper">
+            <!-- Animated Chessboard -->
         <div class="animated-chessboard
         
-            absolute
-            overflow-hidden
             z-[-1]
             right-[-78px]
             top-[98px]
@@ -60,6 +58,8 @@
             </svg>
         </div>
 
+        </div>
+        
         <div class="pt-5 rich-text" style="width: 70%;">
             {{ page.introduction|richtext }}
         </div>
@@ -69,6 +69,7 @@
                 {% include "components/button.html" with title=page.hero_cta.0.value.get_title url=page.hero_cta.0.value.get_url %}
             </div>
         {% endif %}
+        
 
         {% if page.header_video %}
             <div class="pt-10 pb-10">
@@ -79,16 +80,40 @@
 </div>
 <!-- Optional CSS -->
 <style>
-/* Chessboard Animation */
+    /* Chessboard Container */
+.animated-chessboard-wrapper {
+    position: absolute; /* Creates a containing block for the absolute chessboard */
+    overflow: hidden;   /* Ensures animations outside the viewport are hidden */
+    width:80vw;        /* Maintain container's width */
+    height: 100%;
+    top:0;       /* Adjust to content height */
+}
+
+/* Chessboard Element */
 .animated-chessboard {
-    z-index: -1;
-    transition: transform 1s ease-out, opacity 1s ease-out;
+    position: absolute; /* Removes it from document flow */
+    margin-right: 30%;  /* Start at the right edge of the container */
+    margin-top: 7%;
+    transition: transform 1.5s ease-out, opacity 1.5s ease-out;
+}
+
+/* Responsive Behavior */
+@media (max-width: 1025px) {
+    .animated-chessboard-wrapper {
+        width:100vw;           /* Adjust to content height */
+    }
+    .animated-chessboard {
+        margin-right: 20%; /* Reduced margin for smaller screens */
+    }
 }
 
 .animated-chessboard.scrolled {
     transform: translateX(100vw); /* Move out of the screen */
     opacity: 0;
 }
+
+
+
 
 /* Stats Animation */
 /* Stats Animation */
