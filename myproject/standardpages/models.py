@@ -5,7 +5,7 @@ from wagtail.search import index
 from django.utils.safestring import mark_safe
 
 from wagtail.fields import StreamField
-from myproject.utils.blocks import StoryBlock
+from myproject.utils.blocks import SectionBlocks, StoryBlock
 from myproject.utils.models import BasePage, ChessBoardSnippet, ChessSquare
 
 
@@ -68,8 +68,11 @@ class SponsorBoardPage(BasePage):
         on_delete=models.SET_NULL,
         related_name="page",
     )
+
+    body = StreamField(SectionBlocks(), blank=True)
     
     content_panels = BasePage.content_panels + [
+        FieldPanel("body"),
         FieldPanel("board"),
     ]
 

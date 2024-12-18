@@ -3,6 +3,12 @@
 
 {% block content %}
 <div class="site-container">
+    {% if page.body %}
+    <div style="margin: 5%;">
+        {% include_block page.body %}
+    </div>
+        
+    {% endif %}
     <div class="chessboard-container">
         <div class="chessboard">
             {% for row in "87654321" %}
