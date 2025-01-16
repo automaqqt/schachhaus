@@ -3,12 +3,7 @@
 
 {% block content %}
 <div class="site-container">
-    {% if page.body %}
-    <div style="margin: 5%;">
-        {% include_block page.body %}
-    </div>
-        
-    {% endif %}
+    
     <div class="chessboard-container">
         <div class="chessboard">
             {% for row in "87654321" %}
@@ -67,8 +62,15 @@
                     {% endwith %}
                 {% endfor %}
             {% endfor %}
+        
         </div>
     </div>
+    {% if page.body %}
+    <div style="margin: 5%;">
+        {% include_block page.body %}
+    </div>
+        
+    {% endif %}
 </div>
 
 
@@ -83,6 +85,7 @@
     padding: 20px;
 }
 
+/* Default chessboard styles */
 .chessboard {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -95,6 +98,25 @@
     background-color: #a77051;
     position: relative; /* Ensure the card positions correctly */
 }
+
+/* Media query for landscape devices */
+@media (orientation: landscape) {
+    .chessboard {
+        width: auto; /* Reset width */
+        height: 70vh; /* Fit to height */
+        aspect-ratio: 1; /* Maintain square aspect ratio */
+    }
+}
+
+/* Media query for portrait orientation (handheld) */
+@media (orientation: portrait) {
+    .chessboard {
+        width: 80%; /* Fit to width */
+        height: auto; /* Reset height */
+        aspect-ratio: 1; /* Maintain square aspect ratio */
+    }
+}
+
 
 .chess-square {
     position: relative;

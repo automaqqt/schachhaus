@@ -9,6 +9,10 @@ load-data:
 	python ./manage.py load_initial_data
 	python ./manage.py collectstatic --noinput
 
+gen-css:
+	npm run build
+	python ./manage.py collectstatic --noinput
+
 migrate:
 	python ./manage.py migrate
 

@@ -8,52 +8,39 @@ module.exports = {
         './static_src/**/*.{js,ts}',
     ],
     theme: {
-        // Properties directly inside of theme will overwrite all tailwinds default properties for that attribute
         screens: {
-            'tall': 
-            {
+            'tall': {
                 'raw': '(min-height: 840px)'
             },
-            // Override default breakpoints removing sm
             sm: '412px',
-            // => @media (min-width: 420px) { ... }
             md: '768px',
-            // => @media (min-width: 768px) { ... }
             lg: '1024px',
-            // => @media (min-width: 1024px) { ...
         },
         colors: {
             ...colors,
             'white': '#FFFFFF',
-            'black': '#000000',
+            'black': '#5E2925',
             'mackerel': {
-                100: '#FAF3E3', // very light beige
-                200: '#EEDDC7', // light tan
-                300: '#E1C4A8', // cream tan
-                400: '#D4A98B', // light brown
-                500: '#C78E6D', // medium brown
-                600: '#A77051', // warm brown
-                700: '#8B593E', // deep brown
-                800: '#6F432B', // darker brown
-                900: '#55301D', // dark brown
+                DEFAULT: '#D0B090', // Beige RAL 1001 (light mode background)
+                100: '#FAF6F2',
+                200: '#EBDCCB',
+                300: '#D0B090', // Base beige
+                400: '#5E2925', // Kastanienbraun RAL 8015 (dark mode background)
+                500: '#4B2120',
+                600: '#38191A',
+                700: '#251214',
+                800: '#172351', // Kobaltblau RAL 5013 (link color)
+                900: '#0A0A0A',
             },
-            'grey': {
-                100: '#EFEFEF',
-                200: '#E6E6E6',
-                300: '#CCCCCC',
-                400: '#B3B3B3',
-                500: '#999999',
-                600: '#808080',
-                700: '#4D4D4D',
-                800: '#3A3A3A',
-                900: '#1E1E1E',
+            'link': {
+                DEFAULT: '#172351', // Kobaltblau RAL 5013
+                hover: '#E4B100', // Goldgelb RAL 1004
             },
             'inherit': 'inherit',
             'current': 'currentColor',
             'transparent': 'transparent',
         },
         fontSize: {
-            // Sizes are 12 16 20 22 25 28 32 36 40 48 60
             'xs': ['12px', '1.2'],
             'sm': ['14px', '1.2'],
             'base': ['16px', '1.2'],

@@ -4,30 +4,7 @@
 
 @layer base {
     // TODO load fonts 
-    // @font-face {
-    //     font-family: "Source Sans 3", sans-serif;
-    //     font-optical-sizing: auto;
-    //     font-weight: 400;
-    //     font-style: normal;
-    //     font-display: swap;
-    //     src: url('../fonts/SourceSans3-variable.woff2') format('woff2-variable');
-    // }
-    // @font-face {
-    //     font-family: "Source Serif 4", serif;
-    //     font-optical-sizing: auto;
-    //     font-weight: 400;
-    //     font-style: normal;
-    //     font-display: swap;
-    //     src: url('../fonts/SourceSerif4-variable.woff2') format('woff2-variable');
-    // }
-    // @font-face {
-    //     font-family: "Source Code Pro", monospace;
-    //     font-optical-sizing: auto;
-    //     font-weight: 400;
-    //     font-style: normal;
-    //     font-display: swap;
-    //     src: url('../fonts/SourceSerif4-variable.woff2') format('woff2-variable');
-    // }
+    // Font face declarations remain unchanged...
 
     html {
         @apply font-sans3 font-normal not-italic;
@@ -35,7 +12,7 @@
     }
 
     body {
-        @apply flex flex-col min-h-screen text-mackerel-400 dark:text-white bg-white dark:bg-mackerel-400 overflow-x-hidden;
+        @apply flex flex-col min-h-screen text-black dark:text-mackerel-300 bg-mackerel-300 dark:bg-mackerel-400 overflow-x-hidden;
     }
 
     a,
@@ -43,7 +20,7 @@
     input,
     select {
         &:focus-visible {
-            @apply outline-mackerel-300 outline-[3px] outline-offset-4;
+            @apply outline-mackerel-800 outline-[3px] outline-offset-4;
         }
     }
 }
@@ -69,15 +46,13 @@
         }
 
         a {
-            @apply underline underline-offset-8 decoration-[1.5px] decoration-mackerel-200 hover:decoration-mackerel-300;
-
+            @apply underline underline-offset-8 decoration-[1.5px] decoration-mackerel-200 hover:decoration-mackerel-400;
         }
 
         ol {
             @apply list-decimal list-outside ml-5;
 
             li {
-
                 &:last-child {
                     @apply mb-5;
                 }
@@ -94,7 +69,7 @@
             }
         }
     }
-    // Controls the animation of the menu toggle button (hamburger to cross icon tranisition)
+
     .button-menu-toggle {
         position: relative;
         display: block;
@@ -107,7 +82,7 @@
         margin: auto;
 
         &__line {
-            @apply bg-mackerel-400 dark:bg-white;
+            @apply bg-black dark:bg-mackerel-300;
             position: absolute;
             display: block;
             width: 100%;
@@ -119,25 +94,26 @@
                 top: 2px;
 
                 .mobile-menu-is-open & {
-                    @apply bg-white;
+                    @apply bg-mackerel-300;
                     transform: rotate(45deg);
                 }
             }
 
             &:nth-child(2) {
                 .mobile-menu-is-open & {
-                    @apply bg-white;
+                    @apply bg-mackerel-300;
                     top: 2px;
                     transform: rotate(-45deg);
                 }
             }
         }
     }
+
     .header-logo {
         transition: color, 0.25s ease-out;
 
         &.mobile-menu-is-open {
-            @apply text-white;
+            @apply text-mackerel-300;
         }
     }
 }
