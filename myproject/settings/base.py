@@ -22,7 +22,7 @@ if "SECRET_KEY" in os.environ:
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
-CSRF_TRUSTED_ORIGINS = ["https://dasschachhaus.de"]
+CSRF_TRUSTED_ORIGINS = ["https://dasschachhaus.de", "https://www.dasschachhaus.de"]
 
 if "CSRF_TRUSTED_ORIGINS" in os.environ:
     CSRF_TRUSTED_ORIGINS += os.environ["CSRF_TRUSTED_ORIGINS"].split(",")
